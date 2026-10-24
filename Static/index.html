@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glosförhör</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    select, input, button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+    }
+
+    button {
+        background: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #005ea6;
+    }
+
+    #result {
+        font-size: 20px;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    #score {
+        margin-top: 15px;
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🌍 Glosförhör</h1>
+
+    <label>Välj språk:</label>
+    <select id="language" onchange="startQuiz()">
+        <option value="spanish">Spanska</option>
+        <option value="german">Tyska</option>
+        <option value="french">Franska</option>
+    </select>
+
+    <h2 id="word">Klicka på Start</h2>
+
+    <input type="text" id="answer" placeholder="Skriv översättningen">
+
+    <br>
+
+    <button onclick="checkAnswer()">Svara</button>
+    <button onclick="nextWord()">Nästa ord</button>
+
+    <div id="result"></div>
+    <div id="score">Poäng: 0</div>
+</div>
+
+<script>
+const vocabulary = {
+    spanish: [
+        { foreign: "hola", swedish: "hej" },
+        { foreign: "gracias", swedish: "tack" },
+        { foreign: "adiós", swedish: "hejdå" },
+        { foreign: "perro", swedish: "hund" },
+        { foreign: "gato", swedish: "katt" }
+    ],
+
+    german: [
+        { foreign: "hallo", swedish: "hej" },
+        { foreign: "danke", swedish: "tack" },
+        { foreign: "tschüss", swedish: "hejdå" },
+        { foreign: "hund", swedish: "hund" },
+        { foreign: "katze", swedish: "katt" }
+    ],
+
+    french: [
+        { foreign: "bonjour", swedish: "hej" },
+        { foreign: "merci", swedish: "tack" },
+        { foreign: "au revoir", swedish: "hejdå" },
+        { foreign: "chien", swedish: "hund" },
+        { foreign: "chat", swedish: "katt" }
+    ]
+};
+
+let currentWord;
+let score = 0;
+
+function startQuiz() {
+    score = 0;
+    document.getElementById("score").textContent = "Poäng: 0";
+    nextWord();
+}
+
+function nextWord() {
+    const language = document.getElementById("language").value;
+    const words = vocabulary[language];
+
+    currentWord = words[Math.floor(Math.random() * words.length)];
+
+    document.getElementById("word").textContent = currentWord.foreign;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").textContent = "";
+}
+
+function checkAnswer() {
+    const userAnswer =
+        document.getElementById("answer").value.toLowerCase().trim();
+
+    if (userAnswer === currentWord.swedish) {
+        score++;
+        document.getElementById("result").textContent = "✅ Rätt!";
+        document.getElementById("result").style.color = "green";
+    } else {
+        document.getElementById("result").textContent =
+            "❌ Fel! Rätt svar: " + currentWord.swedish;
+        document.getElementById("result").style.color = "red";
+    }
+
+    document.getElementById("score").textContent =
+        "Poäng: " + score;
+}
+
+startQuiz();
+</script>
+
+</body>
+</html>
