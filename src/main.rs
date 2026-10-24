@@ -12,7 +12,7 @@ async fn
     // Serve your frontend HTML assets directly from the static folder
 
 
-    let app = Router::new().fallback_service(ServeDir::new("static"
+    let app = Router::new().fallback_service(ServeDir::new("Static"
 ));
 
 
